@@ -461,37 +461,30 @@ emmm... 让我们长话短说，get请求处理结束前，
 
 # 小结
 
-1. 读入命令并处理
-```mermaid
-flowchat
-st=>start: redisClient发送 get uid.1
-e=>end: 本轮读事件结束
-op1=>operation: redisServer上在某次事件循环里
+一、读入命令并处理
+1. redisClient发送 get uid.1
+2. redisServer上在某次事件循环里
 该客户端触发了一个读文件事件
-op2=>operation:  readQueryFromClient函数被调用
+3. readQueryFromClient函数被调用
 用来处理该 get请求
-op3=>operation:  提取各个参数
-op4=>operation:  在redisServer的全局命令表中找到处理get请求的函数getCommand
-op5=>operation:  getCommand命令被调用
-op6=>operation:  redisClient默认对应的db是0
+4. 提取各个参数
+5. 在redisServer的全局命令表中找到处理get请求的函数getCommand
+6. getCommand命令被调用
+7. redisClient默认对应的db是0
 在redisServer的0号db中的dict字典里查找key: uid.1
-op7=>operation:  找到key对应的value，并写入redisClient的buf字段
-op8=>operation:  给该客户端设置写事件处理函数sendReplyToClient
+8. 找到key对应的value，并写入redisClient的buf字段
+9. 给该客户端设置写事件处理函数sendReplyToClient
 并设置kqfd监听该客户端fd的写事件
-st->op1->op2->op3->op4->op5->op6->op7->op8->e
-```
-2. 将命令结果返回客户端
-```mermaid
-flowchat
-st=>start: redisServer上在某次事件循环里
-触发了该客户端一个写文件事件
-e=>end: 本轮写事件结束
-op1=>operation:  sendReplyToClient函数被调用
-op2=>operation:  将redisClient的buf字段指向的内容写入套接字fd: 6
-op3=>operation:  将fd: 6上的写事件监听从kqfd上摘除
+10. 本轮读事件结束
 
-st->op1->op2->op3->e
-```
+二、 将命令结果返回客户端
+1. redisServer上在某次事件循环里
+触发了该客户端一个写文件事件
+2. 本轮写事件结束
+3. sendReplyToClient函数被调用
+4. 将redisClient的buf字段指向的内容写入套接字fd: 6
+5. 将fd: 6上的写事件监听从kqfd上摘除
+
 
 ...
 好了，redis的get命令是完事了。
