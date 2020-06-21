@@ -193,3 +193,44 @@ struct redisServer
 
 观众:"说好了从GET/SET请求说起，结果搞了半天都还没开始说 ，你个臭弟弟😡"
   
+
+
+  fd: 6, 调用读事件处理器 fe->rfileProc: c181020, 准备读入数据
+fd: 6 readQueryFromClient 开始处理读事件
+fd: 6, 命令信息->  参数个数: 2, 参数:  dbg mylist 
+查找命令列表
+dbg命令 开始执行 
+mylist 链表的实现方式是 压缩链表
+	元素个数为: 512
+	结构占用大小为: 1035字节
+fd: 6  安装写处理器 sendReplyToClient: c1812d0
+设置 kqfd: 3, 对 fd: 6 写事件的监听
+dbg命令 执行结束
+fd: 6 readQueryFromClient 结束处理读事件
+
+在第1589619582380123 微秒 本次事件循环结束
+
+fd: 6, 调用写事件处理器  fe->wfileProc: c1812d0, 准备写入数据
+fd: 6 sendReplyToClient 开始处理写入事件
++OK
+以上为写入数据内容
+删除 kqfd: 3, 对 fd: 6 写事件的监听
+fd: 6 sendReplyToClient 结束处理写入事件
+
+
+
+dbg命令 开始执行 
+mylist 链表的实现方式是 普通链表, list结构大小: 48
+	元素个数为: 512
+	结构占用大小为: 12336字
+
+
+  mylist 链表的实现方式是 压缩链表
+	元素个数为: 512
+	结构占用大小为: 1547字节
+fd: 6  安装写处理器 sendReplyToClient: a0172d0
+
+
+mylist 链表的实现方式是 普通链表, list结构大小: 48
+	元素个数为: 512
+	结构占用大小为: 12336字节
